@@ -13,7 +13,7 @@ A robust Express.js server template using MongoDB, built with modern ES modules 
 > **Check the [`src/docs`](src/docs) folder for all modules documentation on specific topics like Authentication, Testing, Database, and Deployment.**
 >
 > Each module has its own `.md` guide (e.g., `AUTH.md`, `TIMETABLE.md`, `GOALS.md`, `HABITS.md`, `REMINDERS.md`, `DATABASE.md`, `TESTING.md`).
-
+> For database setup, see the `MONGODB_SETUP.md` file in the root directory.
 ---
 
 ## 🚀 Features
