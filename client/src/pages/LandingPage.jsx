@@ -11,6 +11,12 @@ function LandingPage(){
         <Link to="/login" className="text-blue-500 hover:underline">Go to Login Page</Link>
       </p>
 
+        <p className="mt-2 text-sm text-center text-gray-600">
+          
+          <Link to="/signup" className="text-blue-500 hover:underline">
+            Sign Up here
+          </Link>
+        </p>
 
     </div>
   );
