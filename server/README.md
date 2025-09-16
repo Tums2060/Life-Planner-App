@@ -1,6 +1,21 @@
-# Express.js Server Template
+# Life Planner App – Backend
+
+Welcome to the **Life Planner App Backend** repository! This backend powers the Life Planner MVP, providing APIs and database management for authentication, timetable, goals, habits, reminders, and more.
+
+## Express.js Server Template
 
 A robust Express.js server template using MongoDB, built with modern ES modules and best practices.
+
+---
+
+## NOTE ⚠️
+
+> **Check the [`src/docs`](src/docs) folder for all modules documentation on specific topics like Authentication, Testing, Database, and Deployment.**
+>
+> Each module has its own `.md` guide (e.g., `AUTH.md`, `TIMETABLE.md`, `GOALS.md`, `HABITS.md`, `REMINDERS.md`, `DATABASE.md`, `TESTING.md`).
+> 
+> For database setup, see the `MONGODB_SETUP.md` file in the root directory.
+---
 
 ## 🚀 Features
 
@@ -15,23 +30,43 @@ A robust Express.js server template using MongoDB, built with modern ES modules 
 ## 📁 Project Structure
 ```
 server/
+│
 ├── src/
 │ ├── config/ # Configuration files
 │ │ └── db.js # Database connection setup
+│ │
 │ ├── controllers/ # Route controllers
 │ │ └── sampleController.js
+│ │
 │ ├── middleware/ # Custom middleware
 │ │ ├── auth.js # Authentication middleware
 │ │ ├── errorHandler.js # Centralized error handling
 │ │ └── requestLogger.js # Logs incoming requests
+│ │
 │ ├── models/ # Database models (Mongoose schemas)
 │ │ └── Sample.js
+│ │
 │ ├── routes/ # API route definitions
 │ │ └── sampleRoutes.js
+│ │
+│ ├── services/ # Business logic and services
+│ │ └── sampleService.js
+│ │
+│ ├── tests/ # Test files
+│ │ └── sample.test.js
+│ │
 │ └── server.js # Application entry point
+│
 ├── .env # Environment variables (not committed to git)
+│
 ├── .env.example # Template for environment variables
+│
+├── MONGODB_SETUP.md # MongoDB setup instructions
+│
+├── package-lock.json # Auto-generated lock file for npm
+│
 ├── package.json # Project metadata & dependencies
+│
 └── README.md # Project documentation
 ```
 
@@ -84,7 +119,7 @@ npm start
 | Variable     | Description                | Default Value                        |
 |-------------|----------------------------|-------------------------------------|
 | PORT        | Server port number         | 3000                                |
-| MONGODB_URI | MongoDB connection string  | mongodb://localhost:27017/your_database |
+| MONGODB_URI | MongoDB connection string  | `mongodb://localhost:27017/your_database` |
 
 ## 📚 API Endpoints
 
@@ -97,11 +132,11 @@ npm start
 
 ## 🔒 Authentication
 
-[Describe your authentication strategy here if implemented]
+[Check the `docs/AUTH.md` file for details on setting up and using authentication.]
 
 ## 🧪 Testing
 
-[Describe testing setup and commands when implemented]
+[Check the `docs/TESTING.md` file for details on running tests.]
 
 ## 📦 Production Deployment
 
