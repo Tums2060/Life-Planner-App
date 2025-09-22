@@ -8,13 +8,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
-// ... other imports
 
-/**
- * Express application initialization and configuration.
- * Sets up middleware, routes, and starts the server.
- *
- * Environment variables required:
- * - PORT: Server port number
- * - MONGODB_URI: MongoDB connection string
- */
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log('Server is running on PORT ' + PORT);
+});
