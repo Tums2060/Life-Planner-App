@@ -31,6 +31,15 @@ function SignUp(){
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
+                        type="text"
+                        name="username"
+                        placeholder="Username"
+                        value={form.username}
+                        onChange={handleChange}
+                        className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    />
+
+                    <input
                     type="text"
                     name="email"
                     placeholder="Email"
