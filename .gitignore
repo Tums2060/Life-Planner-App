@@ -57,3 +57,6 @@ dump/
 # Serverless / deployment
 .vercel/
 .netlify/
+
+# my files
+server/src/models/hashPassword.js
