@@ -32,7 +32,7 @@ function Login(){
                     type="text"
                     name="email"
                     placeholder="Email or Username"
-                    value={form.email}
+                    value={form.email || form.username}
                     onChange={handleChange}
                     className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
                     />
@@ -59,7 +59,7 @@ function Login(){
 
                 <p className="mt-6 text-sm text-center text-gray-600">
                     Don't have an account?{" "}
-                    <Link to="/register" className="text-blue-500 font-medium hover:underline">
+                    <Link to="/signup" className="text-blue-500 font-medium hover:underline">
                         Sign up for free
                     </Link>
                 </p>
