@@ -4,6 +4,9 @@ import Landingpage from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
+import Footer from './components/Footer.jsx';
+import Form from './components/ContactForm.jsx';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -16,8 +19,11 @@ function App() {
           <Route path='/' element={<Landingpage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/contact' element={<Form />} />
         </Routes>
       </Router>
+
+      <Footer />
 
     </div>
   );

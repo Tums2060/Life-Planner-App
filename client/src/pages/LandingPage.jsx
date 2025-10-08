@@ -1,24 +1,39 @@
 import { Link } from "react-router-dom";
+import Form from '../components/ContactForm.jsx';
 
 function LandingPage(){
     return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">
-       This is the Landing Page
-      </h1>
-      
-      <p className="mt-6 text-sm text-center text-gray-600">
-        <Link to="/login" className="text-blue-500 hover:underline">Go to Login Page</Link>
-      </p>
+      <div className="flex flex-col">
 
-        <p className="mt-2 text-sm text-center text-gray-600">
-          
-          <Link to="/signup" className="text-blue-500 hover:underline">
-            Sign Up here
-          </Link>
-        </p>
+        <section className="relative h-[90vh] flex items-center justify-center text-center text-white">
+          <video
+            autoPlay
+            loop
+            muted
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="videos/banner2-video.mp4" type="video/mp4" />
+          </video>
 
-    </div>
+          <div className="absolute inset-0 bg-black/50"></div>
+
+          <div className="relative z-10 px-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              Plan Your Life, Live Your Life
+            </h1>
+            <p className="max-w-2xl mx-auto text-lg mb-6">
+              Life Planner helps you stay organized, motivated  and focused, an all in one simple application.
+            </p>
+            <a
+              href="/signup"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition"
+              >Get Started</a>
+          </div>
+
+        </section>
+
+        <Form />
+      </div>
   );
 }
 
