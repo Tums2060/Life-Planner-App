@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Form from '../components/ContactForm.jsx';
+import { Calendar, Target, Bell } from "lucide-react";
 
 function LandingPage(){
     return (
@@ -29,7 +30,36 @@ function LandingPage(){
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md font-medium transition"
               >Get Started</a>
           </div>
+        </section>
 
+        <section className="bg-gray-50 py-20">
+          <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+
+            <div>
+              <Calendar className="mx-auto text-blue-600 w-10 h-10 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Smart Timtables</h3>
+              <p className="text-gray-600">
+                Effortlessly plan your daily routines and tasks with our intuitive scheduling tools.
+              </p>
+            </div>
+
+            <div>
+              <Target className="mx-auto text-blue-600 w-10 h-10 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Goal Tracking</h3>
+              <p className="text-gray-600">
+                Set, monitor and achieve your goals with clear visual progress insights.
+              </p>
+            </div>
+
+            <div>
+              <Bell className="mx-auto text-blue-600 w-10 h-10 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Habits & Reminders</h3>
+              <p className="text-gray-600">
+                Build better habits and never miss important moments with smart reminders.
+              </p>
+            </div>
+
+          </div>
         </section>
 
         <Form />
