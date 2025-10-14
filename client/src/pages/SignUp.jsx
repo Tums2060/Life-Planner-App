@@ -45,7 +45,7 @@ function SignUp(){
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />  
 
                     <input
@@ -54,7 +54,7 @@ function SignUp(){
                     placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
-                    className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />
 
                     <input
@@ -63,12 +63,12 @@ function SignUp(){
                     placeholder="Confirm Password"
                     value={form.confirmPassword}
                     onChange={handleChange}
-                    className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none"
+                    className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />
 
                     <button
                     type="submit"
-                    className="w-full bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+                    className="w-full py-3 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-200 ease-in-out">
                         Sign Up
                     </button>
 
