@@ -59,7 +59,7 @@ function SignUp(){
 
                     <button
                     type="submit"
-                    className="w-full bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition">
+                    className="w-full py-3 bg-green-500 text-white font-semibold rounded-xl shadow-md hover:bg-green-600 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-200 ease-in-out">
                         Sign Up
                     </button>
 
