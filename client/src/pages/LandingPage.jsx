@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Form from '../components/ContactForm.jsx';
 import { Calendar, Target, Bell } from "lucide-react";
 
-function LandingPage(){
+function LandingPage() {
     return (
       <div className="flex flex-col">
 
