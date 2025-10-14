@@ -59,7 +59,7 @@ function Login(){
 
                 <p className="mt-6 text-sm text-center text-gray-600">
                     Don't have an account?{" "}
-                    <Link to="/register" className="text-blue-500 font-medium hover:underline">
+                    <Link to="/signup" className="text-blue-500 font-medium hover:underline">
                         Sign up for free
                     </Link>
                 </p>
