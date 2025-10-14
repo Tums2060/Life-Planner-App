@@ -34,7 +34,7 @@ function Login(){
                     placeholder="Email or Username"
                     value={form.email}
                     onChange={handleChange}
-                    className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
                     <input
@@ -43,7 +43,7 @@ function Login(){
                     placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
-                    className="w-full py-2 px-4 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
                     <div className="flex justify-between text-sm">
