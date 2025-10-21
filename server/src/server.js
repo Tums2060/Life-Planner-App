@@ -12,6 +12,16 @@ import { connectDB } from './config/db.js';
 dotenv.config();
 
 const app = express();
+connectDB();
+
+// Middleware
+app.use(express.json());
+
+// Route
+app.get('/', (req, res) => {
+    res.send('Welcome to the Life Planner App API');
+})
+
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
