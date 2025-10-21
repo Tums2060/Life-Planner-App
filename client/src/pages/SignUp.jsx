@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function SignUp(){
     const [form, setForm] = useState({
-        username: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -32,9 +32,9 @@ function SignUp(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={form.username}
+                        name="name"
+                        placeholder="Name"
+                        value={form.name}
                         onChange={handleChange}
                         className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />
