@@ -37,7 +37,7 @@ function LandingPage() {
 
             <div>
               <Calendar className="mx-auto text-blue-600 w-10 h-10 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Smart Timtables</h3>
+              <h3 className="text-xl font-semibold mb-2">Smart Timetables</h3>
               <p className="text-gray-600">
                 Effortlessly plan your daily routines and tasks with our intuitive scheduling tools.
               </p>
