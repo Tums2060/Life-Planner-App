@@ -5,6 +5,7 @@ const generateToken = (id) =>
     jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: "30d"});
 
 export const registerUser = async (req , res , next) => {
+try {
     try{
         const {name, email, password} = req.body;
 
@@ -24,7 +25,11 @@ export const registerUser = async (req , res , next) => {
     catch (err) {
         next(err);
     }
-}
+}catch (error) {
+    console.error("Registration error:", error);
+    res.status(500).json({ message: "Server error during registration" });
+  }
+ };
 
 export const loginUser = async (req , res , next) => {
     try{

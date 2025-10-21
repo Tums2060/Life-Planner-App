@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignUp(){
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -16,9 +19,40 @@ function SignUp(){
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Sign Up Form submitted:", form);
+        
+        if (form.password !== form.confirmPassword){
+            alert("Passwords do not match");
+            return;
+        }
+
+        try{
+            const response = await fetch("http://localhost:5001/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    password: form.password,
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (response.ok){
+                alert("Registration successfull");
+                navigate("/login");
+            } else {
+                alert(data.message || "Registration failed!");
+            } 
+        }catch (error) {
+                console.error("Error during registration:", error);
+                alert("Something went wrong. Please try again later.");
+            }
     };
 
     return(
