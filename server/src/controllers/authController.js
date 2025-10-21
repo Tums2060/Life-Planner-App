@@ -18,7 +18,7 @@ try {
             _id: user._id, 
             name: user.name, 
             email: user.email, 
-            tocken: generateToken(user._id),
+            token: generateToken(user._id),
         });
 
     }
