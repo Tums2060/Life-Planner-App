@@ -44,7 +44,7 @@ function Navbar(){
                 </li>
 
                 <li>
-                    <a href='#'
+                    <a href='/Reminders'
                     className='hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-600 pb-1'
                     >
                         Reminders

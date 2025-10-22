@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Form from './components/ContactForm.jsx';
+import Reminders from './pages/Reminders.jsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/contact' element={<Form />} />
+          <Route path='/Reminders' element={<Reminders />} />
         </Routes>
       </Router>
 
