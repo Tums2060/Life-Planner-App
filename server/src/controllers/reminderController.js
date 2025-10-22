@@ -1,4 +1,4 @@
-import Reminder from "../models/Reminder";
+import Reminder from "../models/Reminder.js";
 
 // @desc    Create custom reminder
 // @route   POST /api/reminders

@@ -27,7 +27,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
-pp.use("/api/reminders", reminderRoutes);
+app.use("/api/reminders", reminderRoutes);
 startReminderJob();
 
 

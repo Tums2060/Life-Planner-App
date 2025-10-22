@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import Reminder from "../models/Reminder";
+import Reminder from "../models/Reminder.js";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
