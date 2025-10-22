@@ -10,6 +10,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import authRoutes from "./routes/authRoutes.js";
+import reminderRoutes from "./routes/reminderRoutes.js";
+import { startReminderJob } from "./services/reminderService.js";
 
 dotenv.config();
 
@@ -24,6 +26,9 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+
+pp.use("/api/reminders", reminderRoutes);
+startReminderJob();
 
 
 
