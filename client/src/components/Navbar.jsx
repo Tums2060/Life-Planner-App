@@ -20,7 +20,7 @@ function Navbar(){
 
             <ul className="hidden md:flex space-x-8 text-gray-700 font-medium">
                 <li>
-                    <a href='#'
+                    <a href='/Timetable'
                     className='hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-600 pb-1'
                     >
                         Timetables
@@ -28,7 +28,7 @@ function Navbar(){
                 </li>
 
                 <li>
-                    <a href='#'
+                    <a href='/Goals'
                     className='hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-600 pb-1'
                     >
                         Goals
@@ -36,7 +36,7 @@ function Navbar(){
                 </li>
 
                 <li>
-                    <a href='#'
+                    <a href='/Habits'
                     className='hover:text-blue-600 transition-colors border-b-2 border-transparent hover:border-blue-600 pb-1'
                     >
                         Habits
