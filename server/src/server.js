@@ -12,6 +12,7 @@ import { connectDB } from './config/db.js';
 import authRoutes from "./routes/authRoutes.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
 import { startReminderJob } from "./services/reminderService.js";
+import contactRoutes from "./routes/contactRoutes.js";
 
 dotenv.config();
 
@@ -29,6 +30,8 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/reminders", reminderRoutes);
 startReminderJob();
+
+app.use("/api/contact", contactRoutes);
 
 
 

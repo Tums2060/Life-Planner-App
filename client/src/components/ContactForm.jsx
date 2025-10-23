@@ -1,10 +1,52 @@
 import React from 'react';
 import { BookOpen } from "lucide-react";  
 import { Mail, Phone, MapPin, Send, Clock } from "lucide-react";
+import { useState } from 'react';
+import axios from 'axios';
+
 
 
 function Form(){
-    return(
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setSuccess(false);
+
+    try {
+      const response = await axios.post("http://localhost:5001/api/contact", formData);
+      setSuccess(true);
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+      });  
+    } catch (err) {
+      console.error("Failed to send message:", err.response?.data || err.message);
+      alert("Failed to send message. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return(
 
         <section className="bg-gray-50 py-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -14,11 +56,11 @@ function Form(){
             Get in Touch
           </button>
           <h2 className="text-4xl font-bold text-gray-900 mb-3">
-            Let’s <span className="text-blue-600">Connect</span>
+            Let's <span className="text-blue-600">Connect</span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Have ideas that could take Life Planner to the next level, or
-            feedback to make it even better? We’d love to hear from you.
+            feedback to make it even better? We'd love to hear from you.
           </p>
         </div>
 
@@ -31,10 +73,10 @@ function Form(){
               Send us a message
             </h3>
             <p className="text-gray-500 mb-8">
-              We’ll get back to you within 24 hours.
+              We'll get back to you within 24 hours.
             </p>
 
-            <form className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Fields */}
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -43,6 +85,9 @@ function Form(){
                   </label>
                   <input
                     type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     placeholder="John"
                     className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                   />
@@ -54,6 +99,9 @@ function Form(){
                   </label>
                   <input
                     type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                     placeholder="Doe"
                     className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                   />
@@ -67,6 +115,9 @@ function Form(){
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="john@example.com"
                   className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
                 />
@@ -78,6 +129,9 @@ function Form(){
                   Message *
                 </label>
                 <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Tell us about your project, ideas, or how we can help..."
                   rows="4"
                   className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -86,11 +140,22 @@ function Form(){
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-medium flex justify-center items-center gap-2 transition"
+                disabled={loading}
+                className={`w-full text-white py-3 rounded-md font-medium flex justify-center items-center gap-2 transition ${
+                  loading
+                    ? "bg-blue-300 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                }`}
               >
                 <Send className="w-4 h-4" />
-                Send Message
+                {loading ? "Sending..." : "Send Message"}
               </button>
+
+              {success && (
+                <p className="text-green-600 text-center mt-4">
+                  Message sent successfully! Check your email for confirmation.
+                </p>
+              )}
             </form>
           </div>
 
@@ -112,7 +177,7 @@ function Form(){
               <div>
                 <h4 className="text-gray-800 font-semibold">Call Us</h4>
                 <p className="text-gray-600 text-sm">+254 700 123 456</p>
-                <p className="text-gray-400 text-sm">Mon–Fri, 9AM–5PM</p>
+                <p className="text-gray-400 text-sm">Mon-Fri, 9AM-5PM</p>
               </div>
             </div>
 
@@ -141,9 +206,7 @@ function Form(){
         </div>
       </div>
     </section>
-
-
-    );
+  );
 }
 
 export default Form;
