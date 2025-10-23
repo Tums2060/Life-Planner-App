@@ -10,30 +10,35 @@ import Reminders from './pages/Reminders.jsx';
 import Timetable from './pages/Timetable.jsx';
 import Goals from './pages/Goals.jsx';
 import Habits from './pages/Habits.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import { useAuth } from './context/AuthContext.jsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
+  const { user } = useAuth();
+  
   return (
-    <div className="App">
-      <Navbar />
+    <Router>
+      <div className="App">
+        <Navbar />
 
-      <Router>
         <Routes>
           <Route path='/' element={<Landingpage />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/contact' element={<Form />} />
-          <Route path='/Reminders' element={<Reminders />} />
-          <Route path='/Timetable' element={<Timetable />} />
-          <Route path='/Goals' element={<Goals />} />
-          <Route path='/Habits' element={<Habits />} />
+
+          {/* Protected Routes */}
+          <Route path='/Reminders' element={<ProtectedRoute><Reminders /></ProtectedRoute>} />
+          <Route path='/Timetable' element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
+          <Route path='/Goals' element={<ProtectedRoute><Goals /></ProtectedRoute>} />
+          <Route path='/Habits' element={<ProtectedRoute><Habits /></ProtectedRoute>} />
         </Routes>
-      </Router>
 
-      <Footer />
-
-    </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
