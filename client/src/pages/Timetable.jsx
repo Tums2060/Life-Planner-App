@@ -1,12 +1,41 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
 function Timetable(){
-    return (
-        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold mb-4">Timetable</h1>
-            <p className="text-lg text-gray-600">This is the timetable page.</p>
-        </div>
-    )
+    const [events, setEvents] = useState([]);
+    const [form, setForm] = useState({
+        title:"",
+        day:"Mon",
+        time: "09:00",
+        type: "Study",
+    });
+
+    useEffect(() => {
+
+    }, []);
+
+    const handleAdd = () => {
+        if (!form.title.trim()) return;
+
+        const newEvent ={
+            _id: Date.now(),
+            ...form,
+        };
+
+        setEvents([...events, newEvent]);
+
+        setForm({
+            title: "",
+            day: "Mon",
+            time: "09:00",
+            type: "Study",
+        });
+    };
+
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const eventsByDay = days.reduce((acc, day) => {
+        acc[day] = events.filter((e) => e.day === day);
+        return acc;
+    }, {});
 }
 
 export default Timetable;
