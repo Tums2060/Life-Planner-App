@@ -60,11 +60,76 @@ function Timetable(){
                 onChange={(e) => setForm({ ...form, title: e.target.value})}
                 className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[180px]"
                 />
+
+                <select 
+                value={form.day}
+                onChange={(e) => setForm({ ...form, day: e.target.value})}
+                className="border border-gray-300 rounded-lg p-2"
+                >
+                    {days.map((d) => (
+                        <option key={d}>{d}</option>
+                    ))}
+                </select>
+
+                <input 
+                type="time"
+                value={form.time}
+                onChange={(e) => setForm({ ...form, time: e.target.value})}
+                className="border border-gray-300 rounded-lg p-2"
+                />
+
+                <select 
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value})}
+                className="border border-gray-300 rounded-lg p-2"
+                >
+                    <option>Study</option>
+                    <option>Class</option>
+                    <option>Personal</option>
+                </select>
+
+                <button 
+                onClick={handleAdd}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                    Add
+                </button>
+
             </div>
+
+            {/* Week Columns */}
+            <div className="grid grid-cols-7 gap-4">
+        {days.map((day) => (
+          <div
+            key={day}
+            className="border border-gray-200 rounded-xl p-3 flex flex-col min-h-[180px]"
+          >
+            <h3 className="font-medium text-gray-700 mb-2">{day}</h3>
+
+            {eventsByDay[day]?.length > 0 ? (
+              eventsByDay[day].map((event) => (
+                <div
+                  key={event._id}
+                  className={`p-3 mb-2 rounded-lg border ${typeColors[event.type]}`}
+                >
+                  <p className="font-medium text-gray-800">{event.title}</p>
+                  <p className="text-sm text-gray-600">{event.type}</p>
+                  <p className="text-sm text-gray-500">{event.time}</p>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-400 text-sm mt-8 text-center">
+                No events
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
         </div>
 
 
     );
-}
+};
 
 export default Timetable;
