@@ -9,20 +9,36 @@ function Timetable(){
         type: "Study",
     });
 
+    // Load events from localStorage on mount
     useEffect(() => {
-
+        const savedEvents = localStorage.getItem('timetableEvents');
+        if (savedEvents) {
+            setEvents(JSON.parse(savedEvents));
+        }
     }, []);
 
-    const handleAdd = () => {
-        if (!form.title.trim()) return;
+    // Save events to localStorage whenever they change
+    useEffect(() => {
+        if (events.length > 0) {
+            localStorage.setItem('timetableEvents', JSON.stringify(events));
+        }
+    }, [events]);
 
-        const newEvent ={
-            _id: Date.now(),
+    const handleAdd = (e) => {
+        e.preventDefault();
+        if (!form.title.trim()) {
+            alert("Please enter a title for the event");
+            return;
+        }
+
+        const newEvent = {
+            _id: Date.now().toString(),
             ...form,
         };
 
         setEvents([...events, newEvent]);
 
+        // Reset form
         setForm({
             title: "",
             day: "Mon",
@@ -31,16 +47,29 @@ function Timetable(){
         });
     };
 
+    const handleDelete = (eventId) => {
+        setEvents(events.filter(e => e._id !== eventId));
+        // Update localStorage
+        const updatedEvents = events.filter(e => e._id !== eventId);
+        if (updatedEvents.length === 0) {
+            localStorage.removeItem('timetableEvents');
+        } else {
+            localStorage.setItem('timetableEvents', JSON.stringify(updatedEvents));
+        }
+    };
+
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     const eventsByDay = days.reduce((acc, day) => {
-        acc[day] = events.filter((e) => e.day === day);
+        acc[day] = events
+            .filter((e) => e.day === day)
+            .sort((a, b) => a.time.localeCompare(b.time)); // Sort by time
         return acc;
     }, {});
 
-    const typeColors ={
-        Study: "bg-green-100 border-green-300",
-        Class: "bg-purple-100 border-purple-300",
-        Personal: "bg-yellow-100 border-yellow-300",
+    const typeColors = {
+        Study: "bg-green-100 border-green-300 text-green-800",
+        Class: "bg-purple-100 border-purple-300 text-purple-800",
+        Personal: "bg-yellow-100 border-yellow-300 text-yellow-800",
     };
 
 
@@ -58,16 +87,16 @@ function Timetable(){
                 placeholder="e.g. Computer Networks Lab"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value})}
-                className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[180px]"
+                className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[180px] focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
 
                 <select 
                 value={form.day}
                 onChange={(e) => setForm({ ...form, day: e.target.value})}
-                className="border border-gray-300 rounded-lg p-2"
+                className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 >
                     {days.map((d) => (
-                        <option key={d}>{d}</option>
+                        <option key={d} value={d}>{d}</option>
                     ))}
                 </select>
 
@@ -75,17 +104,17 @@ function Timetable(){
                 type="time"
                 value={form.time}
                 onChange={(e) => setForm({ ...form, time: e.target.value})}
-                className="border border-gray-300 rounded-lg p-2"
+                className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 />
 
                 <select 
                 value={form.type}
                 onChange={(e) => setForm({ ...form, type: e.target.value})}
-                className="border border-gray-300 rounded-lg p-2"
+                className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                 >
-                    <option>Study</option>
-                    <option>Class</option>
-                    <option>Personal</option>
+                    <option value="Study">Study</option>
+                    <option value="Class">Class</option>
+                    <option value="Personal">Personal</option>
                 </select>
 
                 <button 
@@ -99,32 +128,38 @@ function Timetable(){
 
             {/* Week Columns */}
             <div className="grid grid-cols-7 gap-4">
-        {days.map((day) => (
-          <div
-            key={day}
-            className="border border-gray-200 rounded-xl p-3 flex flex-col min-h-[180px]"
-          >
-            <h3 className="font-medium text-gray-700 mb-2">{day}</h3>
+                {days.map((day) => (
+                    <div
+                        key={day}
+                        className="border border-gray-200 rounded-xl p-3 flex flex-col min-h-[180px] bg-white shadow-sm"
+                    >
+                        <h3 className="font-medium text-gray-700 mb-2 border-b pb-2">{day}</h3>
 
-            {eventsByDay[day]?.length > 0 ? (
-              eventsByDay[day].map((event) => (
-                <div
-                  key={event._id}
-                  className={`p-3 mb-2 rounded-lg border ${typeColors[event.type]}`}
-                >
-                  <p className="font-medium text-gray-800">{event.title}</p>
-                  <p className="text-sm text-gray-600">{event.type}</p>
-                  <p className="text-sm text-gray-500">{event.time}</p>
-                </div>
-              ))
-            ) : (
-              <div className="text-gray-400 text-sm mt-8 text-center">
-                No events
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+                        {eventsByDay[day]?.length > 0 ? (
+                            eventsByDay[day].map((event) => (
+                                <div
+                                    key={event._id}
+                                    className={`p-3 mb-2 rounded-lg border-l-4 ${typeColors[event.type]} relative group`}
+                                >
+                                    <p className="font-medium text-sm">{event.title}</p>
+                                    <p className="text-xs opacity-75 mt-1">{event.type}</p>
+                                    <p className="text-xs opacity-75">{event.time}</p>
+                                    <button
+                                        onClick={() => handleDelete(event._id)}
+                                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600 transition"
+                                    >
+                                        ×
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-gray-400 text-sm mt-8 text-center">
+                                No events
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
 
         </div>
 
