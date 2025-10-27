@@ -5,7 +5,7 @@ function Timetable(){
     const [form, setForm] = useState({
         title:"",
         day:"Mon",
-        time: "09:00",
+        time: "",
         type: "Study",
     });
 
@@ -30,6 +30,10 @@ function Timetable(){
             alert("Please enter a title for the event");
             return;
         }
+        if (!form.time) {
+            alert("Please select a time for the event");
+            return;
+        }
 
         const newEvent = {
             _id: Date.now().toString(),
@@ -42,7 +46,7 @@ function Timetable(){
         setForm({
             title: "",
             day: "Mon",
-            time: "09:00",
+            time: "",
             type: "Study",
         });
     };
@@ -70,6 +74,16 @@ function Timetable(){
         Study: "bg-green-100 border-green-300 text-green-800",
         Class: "bg-purple-100 border-purple-300 text-purple-800",
         Personal: "bg-yellow-100 border-yellow-300 text-yellow-800",
+    };
+
+    // Format time to 12-hour format with AM/PM
+    const formatTime = (time24) => {
+        if (!time24) return '';
+        const [hours, minutes] = time24.split(':');
+        const hour = parseInt(hours);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const hour12 = hour % 12 || 12;
+        return `${hour12}:${minutes} ${ampm}`;
     };
 
 
@@ -105,6 +119,8 @@ function Timetable(){
                 value={form.time}
                 onChange={(e) => setForm({ ...form, time: e.target.value})}
                 className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                required
+                placeholder="Select time"
                 />
 
                 <select 
@@ -143,7 +159,7 @@ function Timetable(){
                                 >
                                     <p className="font-medium text-sm">{event.title}</p>
                                     <p className="text-xs opacity-75 mt-1">{event.type}</p>
-                                    <p className="text-xs opacity-75">{event.time}</p>
+                                    <p className="text-xs opacity-75 font-semibold">{formatTime(event.time)}</p>
                                     <button
                                         onClick={() => handleDelete(event._id)}
                                         className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600 transition"
