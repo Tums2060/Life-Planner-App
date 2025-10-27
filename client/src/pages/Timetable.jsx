@@ -114,14 +114,16 @@ function Timetable(){
                     ))}
                 </select>
 
-                <input 
-                type="time"
-                value={form.time}
-                onChange={(e) => setForm({ ...form, time: e.target.value})}
-                className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                required
-                placeholder="Select time"
-                />
+                <div className="relative">
+                    <label className="block text-xs text-gray-600 mb-1 font-medium">Select Time</label>
+                    <input 
+                    type="time"
+                    value={form.time}
+                    onChange={(e) => setForm({ ...form, time: e.target.value})}
+                    className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none cursor-pointer w-[130px]"
+                    required
+                    />
+                </div>
 
                 <select 
                 value={form.type}
