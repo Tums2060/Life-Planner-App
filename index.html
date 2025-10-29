@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Planner App 🌿</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- LOGIN & REGISTER -->
+  <section id="auth-section" class="auth-section">
+    <h1>🌿 Life Planner</h1>
+
+    <div class="auth-box" id="login-box">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Enter your name" />
+      <input type="password" id="login-password" placeholder="Enter password" />
+      <button onclick="login()">Login</button>
+      <p>Don’t have an account? <a href="#" onclick="showRegister()">Register</a></p>
+    </div>
+
+    <div class="auth-box hidden" id="register-box">
+      <h2>Register</h2>
+      <input type="text" id="register-username" placeholder="Enter your name" />
+      <input type="password" id="register-password" placeholder="Create password" />
+      <button onclick="register()">Register</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Back to Login</a></p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="hidden">
+    <div class="sidebar">
+      <h2>Life Planner</h2>
+      <button onclick="showFullSection('timetable')">Timetable</button>
+      <button onclick="showFullSection('goals')">Goals</button>
+      <button onclick="showFullSection('habits')">Habits</button>
+      <button onclick="showFullSection('reminders')">Reminders</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="main-content">
+      <h1 id="welcome-text"></h1>
+      <p>Stay organized, focused, and consistent ✨</p>
+
+      <div id="content-area">
+        <!-- Dynamic summary or full section content -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const defaultData = {
+      timetable: [],
+      goals: [],
+      habits: [],
+      reminders: []
+    };
+
+    // --- AUTH FUNCTIONS ---
+    function showRegister() {
+      document.getElementById("login-box").classList.add("hidden");
+      document.getElementById("register-box").classList.remove("hidden");
+    }
+
+    function showLogin() {
+      document.getElementById("register-box").classList.add("hidden");
+      document.getElementById("login-box").classList.remove("hidden");
+    }
+
+    function register() {
+      const name = document.getElementById("register-username").value.trim();
+      const pass = document.getElementById("register-password").value.trim();
+      if (!name || !pass) return alert("Please fill in all fields!");
+      localStorage.setItem(`user_${name}`, pass);
+      localStorage.setItem(`data_${name}`, JSON.stringify(defaultData));
+      alert("Registration successful! Please log in.");
+      showLogin();
+    }
+
+    function login() {
+      const name = document.getElementById("login-username").value.trim();
+      const pass = document.getElementById("login-password").value.trim();
+      const saved = localStorage.getItem(`user_${name}`);
+      if (saved && saved === pass) {
+        localStorage.setItem("currentUser", name);
+        showDashboard();
+      } else alert("Invalid credentials.");
+    }
+
+    function logout() {
+      localStorage.removeItem("currentUser");
+      document.getElementById("dashboard").classList.add("hidden");
+      document.getElementById("auth-section").classList.remove("hidden");
+    }
+
+    // --- DASHBOARD FUNCTIONS ---
+    function showDashboard() {
+      const user = localStorage.getItem("currentUser");
+      document.getElementById("auth-section").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      document.getElementById("welcome-text").textContent = `Welcome, ${user}! 🌿`;
+      showSummary(); // show summary cards first
+    }
+
+    function getUserData() {
+      const user = localStorage.getItem("currentUser");
+      return JSON.parse(localStorage.getItem(`data_${user}`)) || JSON.parse(JSON.stringify(defaultData));
+    }
+
+    function saveUserData(data) {
+      const user = localStorage.getItem("currentUser");
+      localStorage.setItem(`data_${user}`, JSON.stringify(data));
+    }
+
+    // --- SUMMARY CARDS ---
+    function showSummary() {
+      const data = getUserData();
+      const content = document.getElementById("content-area");
+      content.innerHTML = "";
+
+      const sections = ["timetable", "goals", "habits", "reminders"];
+
+      sections.forEach(sec => {
+        const items = data[sec];
+        const preview = items.slice(-3); // show last 3 items
+        const card = document.createElement("div");
+        card.className = "section";
+        card.innerHTML = `
+          <h2>${sec.charAt(0).toUpperCase() + sec.slice(1)}</h2>
+          <ul>
+            ${preview.map(item => `<li>${item}</li>`).join("")}
+          </ul>
+          <button onclick="showFullSection('${sec}')">View All</button>
+        `;
+        content.appendChild(card);
+      });
+    }
+
+    // --- FULL SECTION VIEW (Add/Delete) ---
+    function showFullSection(section) {
+      const data = getUserData();
+      const content = document.getElementById("content-area");
+      content.innerHTML = `
+        <div class="section">
+          <h2>${section.charAt(0).toUpperCase() + section.slice(1)}</h2>
+          <ul id="list-${section}">
+            ${data[section].map((item, i) => `<li>${item} <button class="delete-btn" onclick="deleteItem('${section}', ${i})">Delete</button></li>`).join("")}
+          </ul>
+          <input type="text" id="input-${section}" placeholder="Add new ${section}..." />
+          <button onclick="addItem('${section}')">Add</button>
+          <button onclick="showSummary()">Back to Dashboard</button>
+        </div>
+      `;
+    }
+
+    function addItem(section) {
+      const input = document.getElementById(`input-${section}`);
+      const value = input.value.trim();
+      if (!value) return;
+      const data = getUserData();
+      data[section].push(value);
+      saveUserData(data);
+      showFullSection(section);
+    }
+
+    function deleteItem(section, index) {
+      const data = getUserData();
+      data[section].splice(index, 1);
+      saveUserData(data);
+      showFullSection(section);
+    }
+
+    // --- AUTO LOGIN ---
+    window.onload = () => {
+      const user = localStorage.getItem("currentUser");
+      if (user) showDashboard();
+    };
+  </script>
+</body>
+</html>
