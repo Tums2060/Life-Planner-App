@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../lib/axios.js";
 
 function SignUp(){
     const navigate = useNavigate();
@@ -22,37 +22,26 @@ function SignUp(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (form.password !== form.confirmPassword){
+        if (form.password !== form.confirmPassword) {
             alert("Passwords do not match");
             return;
         }
 
         try{
-            const response = await fetch("http://localhost:5001/api/auth/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: form.username,
-                    email: form.email,
-                    password: form.password,
-                }),
+            const res = await api.post("/auth/register", {
+                username: form.username,
+                email: form.email,
+                password: form.password,
             });
 
-            const data = await response.json();
-            console.log(data);
-
-            if (response.ok){
-                alert("Registration successful");
-                navigate("/login");
-            } else {
-                alert(data.message || "Registration failed!");
-            } 
-        }catch (error) {
-                console.error("Error during registration:", error);
-                alert("Something went wrong. Please try again later.");
-            }
+            console.log("✅ Registration successful:", res.data.user, res.data.token);
+            alert("Registration successful!");
+            navigate("/login");
+        } catch (error) {
+            console.error("❌ Registration failed:", error.response?.data || error);
+            const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
+            alert("Something went wrong. Please try again later.");
+        }
     };
 
     return(
@@ -66,7 +55,7 @@ function SignUp(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="name"
+                        name="username"
                         placeholder="Username"
                         value={form.username}
                         onChange={handleChange}

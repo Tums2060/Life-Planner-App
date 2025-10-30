@@ -63,7 +63,7 @@ function Navbar(){
             <div className='flex items-center space-x-4'>
                 {user ? (
                     <>
-                        <span className='text-gray-700'>Welcome, {user.name}!</span>
+                        <span className='text-gray-700'>Welcome, {user?.username || user?.email || "User"}!</span>
                         <button
                             onClick={handleLogout}
                             className='px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition'

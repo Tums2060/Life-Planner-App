@@ -7,6 +7,7 @@ const generateToken = (id) => {
     });
 };
 
+// ---------------- REGISTER ----------------
 export const RegisterUser = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({ message: 'Request body is missing' });
@@ -21,9 +22,17 @@ export const RegisterUser = async (req, res) => {
     }
 
     try {
-        const userExists = await User.findOne({ email });
+        const userExists = await User.findOne({
+            $or: [
+                { email: email.toLowerCase() },
+                { username }
+            ]
+        });
+
         if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({
+                message: 'User already exists'
+            });
         }
 
         const user = await User.create({ username, email, password });
@@ -31,9 +40,11 @@ export const RegisterUser = async (req, res) => {
         if (user) {
             res.status(201).json({
                 message: 'User created successfully',
-                _id: user._id,
-                username: user.username,
-                email: user.email,
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                },
                 token: generateToken(user._id),
             });
         } else {
@@ -44,6 +55,7 @@ export const RegisterUser = async (req, res) => {
     }
 };
 
+// ---------------- LOGIN ----------------
 export const LoginUser = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({ message: 'Request body is missing' });
@@ -72,20 +84,22 @@ export const LoginUser = async (req, res) => {
             });
         }
 
-        // // Verify password if user exists
-        // const isPasswordValid = await user.matchPassword(password);
-        // if (!isPasswordValid) {
-        //     return res.status(401).json({
-        //         message: 'Invalid password'
-        //     });
-        // }
+        // Verify password if user exists
+        const isPasswordValid = await user.matchPassword(password);
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: 'Invalid password'
+            });
+        }
 
         // Success case
         res.json({
             message: 'User logged in successfully',
-            _id: user._id,
-            username: user.username,
-            email: user.email,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+            },
             token: generateToken(user._id),
         });
 
@@ -95,6 +109,33 @@ export const LoginUser = async (req, res) => {
     }
 };
 
+export const getUserDetails = async (req, res) => {
+    try {
+        // The user ID should be available from the auth middleware
+        const userId = req.user._id;
+
+        // Find the user by ID but exclude the password
+        const user = await User.findById(userId).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Return user details
+        res.json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            // Add any other user fields you want to return
+        });
+
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        res.status(500).json({ message: 'Server error while fetching user details' });
+    }
+}
+
+// ---------------- LOGOUT ----------------
 export const LogoutUser = async (req, res) => {
     // Invalidate token on client side by removing it
     res.json({ message: 'User logged out successfully' });
