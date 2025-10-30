@@ -54,7 +54,7 @@ function SignUp(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="name"
+                        name="username"
                         placeholder="Username"
                         value={form.username}
                         onChange={handleChange}
