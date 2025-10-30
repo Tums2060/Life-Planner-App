@@ -20,10 +20,13 @@ function Login() {
             });
 
             // Save user + token to context/localStorage
-            login({
+            const userData = {
                 ...res.data.user,
-                token: res.data.token,
-            });
+                token: res.data.token
+            };
+
+            api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+            login(userData);
             navigate("/Timetable");
         } catch (error) {
             console.error("❌ Login failed:", error.response?.data || error.message);
