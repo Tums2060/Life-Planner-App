@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../lib/axios.js";
+import toast from "react-hot-toast";
 
 function Login() {
     const [emailOrUsername, setEmailOrUsername] = useState("");
@@ -27,10 +28,11 @@ function Login() {
 
             api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
             login(userData);
+            toast.success("Login successful!");
             navigate("/Timetable");
         } catch (error) {
             console.error("❌ Login failed:", error.response?.data || error.message);
-            alert("Invalid credentials.");
+            toast.error("Login failed. Please try again later.");
         }
     };
 
