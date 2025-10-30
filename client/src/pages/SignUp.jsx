@@ -38,9 +38,10 @@ function SignUp(){
             alert("Registration successful!");
             navigate("/login");
         } catch (error) {
-                console.error("❌ Registration failed:", error.response?.data || error);
-                alert("Something went wrong. Please try again later.");
-            }
+            console.error("❌ Registration failed:", error.response?.data || error);
+            const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
+            alert("Something went wrong. Please try again later.");
+        }
     };
 
     return(
