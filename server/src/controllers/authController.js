@@ -84,13 +84,13 @@ export const LoginUser = async (req, res) => {
             });
         }
 
-        // // Verify password if user exists
-        // const isPasswordValid = await user.matchPassword(password);
-        // if (!isPasswordValid) {
-        //     return res.status(401).json({
-        //         message: 'Invalid password'
-        //     });
-        // }
+        // Verify password if user exists
+        const isPasswordValid = await user.matchPassword(password);
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: 'Invalid password'
+            });
+        }
 
         // Success case
         res.json({
