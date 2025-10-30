@@ -8,7 +8,17 @@ const generateToken = (id) => {
 };
 
 export const RegisterUser = async (req, res) => {
+    if (!req.body) {
+        return res.status(400).json({ message: 'Request body is missing' });
+    }
+
     const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+        return res.status(400).json({
+            message: 'Please provide all required fields: username, email, password'
+        });
+    }
 
     try {
         const userExists = await User.findOne({ email });
@@ -34,7 +44,17 @@ export const RegisterUser = async (req, res) => {
 };
 
 export const LoginUser = async (req, res) => {
+    if (!req.body) {
+        return res.status(400).json({ message: 'Request body is missing' });
+    }
+
     const { emailOrUsername, password } = req.body;
+
+    if (!emailOrUsername || !password) {
+        return res.status(400).json({
+            message: 'Please provide all required fields: username, email, password'
+        });
+    }
 
     try {
         const user = await User.findOne({
