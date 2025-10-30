@@ -4,8 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "../lib/axios.js";
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
+    const [emailOrUsername, setEmailOrUsername] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -16,12 +15,15 @@ function Login() {
         e.preventDefault();
         try {
             const res = await api.post("/auth/login", {
-                emailOrUsername: email || username,
+                emailOrUsername: emailOrUsername,
                 password,
             });
 
             // Save user + token to context/localStorage
-            login(res.data.user, res.data.token);
+            login({
+                ...res.data.user,
+                token: res.data.token,
+            });
             navigate("/Timetable");
         } catch (error) {
             console.error("❌ Login failed:", error.response?.data || error.message);
@@ -40,10 +42,10 @@ function Login() {
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
-                    type="email"
+                    type="email or username"
                     placeholder="Email or Username"
-                    value={email || username}
-                    onChange={(e) => setEmail(e.target.value) || setUsername(e.target.value)}
+                    value={emailOrUsername}
+                    onChange={(e) => setEmailOrUsername(e.target.value)}
                     className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
