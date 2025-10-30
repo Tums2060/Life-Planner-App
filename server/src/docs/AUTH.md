@@ -115,7 +115,7 @@ In `routes/authRoutes.js`, set up routes for registration and login:
 ```javascript
 import express from "express";
 import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
