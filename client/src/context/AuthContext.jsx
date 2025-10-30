@@ -1,12 +1,22 @@
-import { createContext, useState, useContext, useEffect} from 'react';
+import { createContext, useState, useContext, useEffect } from "react";
+import api from "../lib/axios.js";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem("user");
         return savedUser ? JSON.parse(savedUser) : null;
     });
+
+    // When user or token changes, attach Authorization header globally
+    useEffect(() => {
+        if (user?.token) {
+            api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+        } else {
+            delete api.defaults.headers.common["Authorization"];
+        }
+    }, [user]);
 
     const login = (userData) => {
         localStorage.setItem("user", JSON.stringify(userData));
@@ -19,7 +29,7 @@ export const AuthProvider = ({children}) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{ user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
