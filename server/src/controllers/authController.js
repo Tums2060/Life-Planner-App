@@ -7,6 +7,7 @@ const generateToken = (id) => {
     });
 };
 
+// ---------------- REGISTER ----------------
 export const RegisterUser = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({ message: 'Request body is missing' });
@@ -31,9 +32,11 @@ export const RegisterUser = async (req, res) => {
         if (user) {
             res.status(201).json({
                 message: 'User created successfully',
-                _id: user._id,
-                username: user.username,
-                email: user.email,
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                },
                 token: generateToken(user._id),
             });
         } else {
@@ -44,6 +47,7 @@ export const RegisterUser = async (req, res) => {
     }
 };
 
+// ---------------- LOGIN ----------------
 export const LoginUser = async (req, res) => {
     if (!req.body) {
         return res.status(400).json({ message: 'Request body is missing' });
@@ -83,9 +87,11 @@ export const LoginUser = async (req, res) => {
         // Success case
         res.json({
             message: 'User logged in successfully',
-            _id: user._id,
-            username: user.username,
-            email: user.email,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+            },
             token: generateToken(user._id),
         });
 
@@ -95,6 +101,7 @@ export const LoginUser = async (req, res) => {
     }
 };
 
+// ---------------- LOGOUT ----------------
 export const LogoutUser = async (req, res) => {
     // Invalidate token on client side by removing it
     res.json({ message: 'User logged out successfully' });
