@@ -9,14 +9,34 @@ export const AuthProvider = ({ children }) => {
         return savedUser ? JSON.parse(savedUser) : null;
     });
 
-    // When user or token changes, attach Authorization header globally
     useEffect(() => {
+        const loadUserDetails = async () => {
+            if (user?.token && !user?.username) {
+                try {
+                    const response = await api.get('/api/users/me');
+                    const updatedUser = {
+                        ...user,
+                        ...response.data
+                    };
+                    setUser(updatedUser);
+                    localStorage.setItem("user", JSON.stringify(updatedUser));
+                } catch (error) {
+                    console.error("Failed to load user details:", error);
+                    // Handle token expiration or other errors
+                    if (error.response?.status === 401) {
+                        logout();
+                    }
+                }
+            }
+        };
+
         if (user?.token) {
             api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
+            loadUserDetails();
         } else {
             delete api.defaults.headers.common["Authorization"];
         }
-    }, [user]);
+    }, [user?.token]);
 
     const login = (userData) => {
         localStorage.setItem("user", JSON.stringify(userData));
@@ -26,6 +46,7 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         localStorage.removeItem("user");
         setUser(null);
+        delete api.defaults.headers.common["Authorization"];
     };
 
     return (
