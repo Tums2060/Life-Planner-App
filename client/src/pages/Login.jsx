@@ -5,6 +5,7 @@ import axios from "axios";
 
 function Login(){
     const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -15,6 +16,7 @@ function Login(){
         e.preventDefault();
         try{
             const {data} = await axios.post("http://localhost:5001/api/auth/login", {
+                username,
                 email,
                 password,
             });
@@ -39,9 +41,9 @@ function Login(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                     type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email or Username"
+                    value={email || username}
+                    onChange={(e) => setEmail(e.target.value) || setUsername(e.target.value)}
                     className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
