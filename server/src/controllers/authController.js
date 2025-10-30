@@ -44,16 +44,29 @@ export const LoginUser = async (req, res) => {
             ]
         });
 
-        if (user && (await user.matchPassword(password))) {
-            res.json({
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                token: generateToken(user._id),
+        // Check if user exists
+        if (!user) {
+            return res.status(404).json({
+                message: 'Account not found. Please check your credentials or register.'
             });
-        } else {
-            res.status(401).json({ message: 'Invalid credentials' });
         }
+
+        // Verify password if user exists
+        const isPasswordValid = await user.matchPassword(password);
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                message: 'Invalid password'
+            });
+        }
+
+        // Success case
+        res.json({
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            token: generateToken(user._id),
+        });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
