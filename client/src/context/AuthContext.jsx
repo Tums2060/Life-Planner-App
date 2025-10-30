@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loadUserDetails = async () => {
-            if (user?.token && !user?.username) {
+            if (user?.token) {
                 try {
                     const response = await api.get('/api/users/me');
                     const updatedUser = {
