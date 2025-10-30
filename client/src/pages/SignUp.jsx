@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SignUp(){
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
-        username: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -16,9 +19,40 @@ function SignUp(){
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Sign Up Form submitted:", form);
+        
+        if (form.password !== form.confirmPassword){
+            alert("Passwords do not match");
+            return;
+        }
+
+        try{
+            const response = await fetch("http://localhost:5001/api/auth/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: form.name,
+                    email: form.email,
+                    password: form.password,
+                }),
+            });
+
+            const data = await response.json();
+            console.log(data);
+
+            if (response.ok){
+                alert("Registration successfull");
+                navigate("/login");
+            } else {
+                alert(data.message || "Registration failed!");
+            } 
+        }catch (error) {
+                console.error("Error during registration:", error);
+                alert("Something went wrong. Please try again later.");
+            }
     };
 
     return(
@@ -32,9 +66,9 @@ function SignUp(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="username"
-                        placeholder="Username"
-                        value={form.username}
+                        name="name"
+                        placeholder="Name"
+                        value={form.name}
                         onChange={handleChange}
                         className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />

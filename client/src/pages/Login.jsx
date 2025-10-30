@@ -1,21 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 function Login(){
-    const [form, setForm] = useState({
-        email: "",
-        password: ""
-    });
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    
+    
 
-    const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.name]: e.target.value
-        });
-    };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(" Login Form submitted:", form);
+        try{
+            const {data} = await axios.post("http://localhost:5001/api/auth/login", {
+                email,
+                password,
+            });
+
+            login(data);
+            navigate("/Timetable");
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+            alert("Invalid credentials.");
+        }
     };
 
     return(
@@ -29,20 +38,18 @@ function Login(){
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
-                    type="text"
-                    name="email"
-                    placeholder="Email or Username"
-                    value={form.email || form.username}
-                    onChange={handleChange}
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
                     <input
                     type="password"
-                    name="password"
                     placeholder="Password"
-                    value={form.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 
