@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import api from "../lib/axios.js";
 
-function Login(){
+function Login() {
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -14,17 +14,17 @@ function Login(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const {data} = await axios.post("http://localhost:5001/api/auth/login", {
-                username,
-                email,
+        try {
+            const res = await api.post("/auth/login", {
+                emailOrUsername: email || username,
                 password,
             });
 
-            login(data);
+            // Save user + token to context/localStorage
+            login(res.data.user, res.data.token);
             navigate("/Timetable");
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("❌ Login failed:", error.response?.data || error.message);
             alert("Invalid credentials.");
         }
     };
