@@ -3,7 +3,6 @@ import api from "../lib/axios.js";
 
 const AuthContext = createContext();
 
-// AuthContext.jsx
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem("user");
@@ -23,13 +22,8 @@ export const AuthProvider = ({ children }) => {
                 try {
                     // Make sure the Authorization header is set
                     api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
-                    console.log('Authorization header:', api.defaults.headers.common["Authorization"]);
-
 
                     const response = await api.get('/auth/users/me');
-                    console.log('User details response:', response.data);
-                    console.log('Current user state:', user);
-
 
                     const updatedUser = {
                         ...user,
