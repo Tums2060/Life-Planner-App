@@ -2,8 +2,8 @@
   "name": "life-planner-app",
   "version": "1.0.0",
   "scripts": {
-    "server": "npm run dev --prefix server",
-    "client": "npm run start --prefix client",
+    "server": "npm  install --prefix server && npm run dev --prefix server",
+    "client": "npm  install --prefix client && npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "devDependencies": {
