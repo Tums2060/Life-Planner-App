@@ -5,11 +5,11 @@ const reminderSchema = new mongoose.Schema(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            reuqired: true,
+            required: true,
         },
         type: {
             type: String,
-            enum: ["timetable", "goal", "Habit", "Custom"],
+            enum: ["Timetable", "Goal", "Habit", "Custom"],
             required: true,
         },
         referenceId: {
