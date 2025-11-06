@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar"; // adjust the path if needed
+import Navbar from "../components/Navbar"; 
 
 export default function Goals() {
   const [newGoal, setNewGoal] = useState("");
