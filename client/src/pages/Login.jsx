@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
+import api from "../lib/axios.js";
+import toast from "react-hot-toast";
 
-function Login(){
-    const [email, setEmail] = useState("");
+function Login() {
+    const [emailOrUsername, setEmailOrUsername] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -13,17 +14,25 @@ function Login(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-            const {data} = await axios.post("http://localhost:5001/api/auth/login", {
-                email,
+        try {
+            const res = await api.post("/auth/login", {
+                emailOrUsername: emailOrUsername,
                 password,
             });
 
-            login(data);
+            // Save user + token to context/localStorage
+            const userData = {
+                ...res.data.user,
+                token: res.data.token
+            };
+
+            api.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`;
+            login(userData);
+            toast.success("Login successful!");
             navigate("/Timetable");
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
-            alert("Invalid credentials.");
+            console.error("❌ Login failed:", error.response?.data || error.message);
+            toast.error("Login failed. Please try again later.");
         }
     };
 
@@ -38,10 +47,10 @@ function Login(){
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="email or username"
+                    placeholder="Email or Username"
+                    value={emailOrUsername}
+                    onChange={(e) => setEmailOrUsername(e.target.value)}
                     className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none hover:border-blue-400 hover:shadow-md hover:shadow-blue-100 transition duration-200"
                     />
 

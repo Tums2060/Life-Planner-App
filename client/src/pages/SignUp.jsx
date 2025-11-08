@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../lib/axios.js";
+import toast from "react-hot-toast";
 
 function SignUp(){
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        name: "",
+        username: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -22,37 +23,26 @@ function SignUp(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (form.password !== form.confirmPassword){
-            alert("Passwords do not match");
+        if (form.password !== form.confirmPassword) {
+            toast.error("Passwords do not match!");
             return;
         }
 
         try{
-            const response = await fetch("http://localhost:5001/api/auth/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: form.name,
-                    email: form.email,
-                    password: form.password,
-                }),
+            const res = await api.post("/auth/register", {
+                username: form.username,
+                email: form.email,
+                password: form.password,
             });
 
-            const data = await response.json();
-            console.log(data);
-
-            if (response.ok){
-                alert("Registration successfull");
-                navigate("/login");
-            } else {
-                alert(data.message || "Registration failed!");
-            } 
-        }catch (error) {
-                console.error("Error during registration:", error);
-                alert("Something went wrong. Please try again later.");
-            }
+            console.log("✅ Registration successful:", res.data.user, res.data.token);
+            toast.success("Registration successful!");
+            navigate("/login");
+        } catch (error) {
+            console.error("❌ Registration failed:", error.response?.data || error);
+            const errorMessage = error.response?.data?.message || "Something went wrong. Please try again later.";
+            toast.error("Something went wrong. Please try again later.");
+        }
     };
 
     return(
@@ -66,9 +56,9 @@ function SignUp(){
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input
                         type="text"
-                        name="name"
-                        placeholder="Name"
-                        value={form.name}
+                        name="username"
+                        placeholder="Username"
+                        value={form.username}
                         onChange={handleChange}
                         className="w-full py-2 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:outline-none hover:border-green-400 hover:shadow-md hover:shadow-green-100 transition duration-200"
                     />

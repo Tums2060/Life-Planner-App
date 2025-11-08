@@ -115,7 +115,7 @@ In `routes/authRoutes.js`, set up routes for registration and login:
 ```javascript
 import express from "express";
 import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -176,13 +176,13 @@ NODE_ENV=development
 Use Postman or Insomnia to test the following endpoints:
 - **Register**: `POST /api/auth/register` with body `
     {
-        "name": "John Doe",
+        "username": "John Doe",
         "email": "john@example.com",
         "password": "password123"
     }`
 - **Login**: `POST /api/auth/login` with body `
     {
-        "email": "john@example.com",
+        "emailOrUsername": "john@example.com",
         "password": "password123"
     }`
 - **Protected Route Example**: Create a test route that uses the `protect` middleware to verify token access.
