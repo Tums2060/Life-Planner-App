@@ -1,43 +1,98 @@
-import React, { useState } from "react";
-import Navbar from "../components/Navbar"; 
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function Goals() {
   const [newGoal, setNewGoal] = useState("");
-  const [goals, setGoals] = useState([
-    { id: 1, title: "Finish essay", progress: 70 },
-    { id: 2, title: "Revise algebra", progress: 45 },
-  ]);
+  const [goals, setGoals] = useState([]);
+  const { user } = useAuth(); // Access logged-in user + token
 
-  const handleAddGoal = () => {
-    if (!newGoal.trim()) return;
-    setGoals([...goals, { id: Date.now(), title: newGoal, progress: 0 }]);
-    setNewGoal("");
+  // Fetch user's goals from backend
+  useEffect(() => {
+    const fetchGoals = async () => {
+      try {
+        const res = await fetch("/api/goals", {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+
+        if (!res.ok) {
+          console.error("Failed to fetch goals:", res.status);
+          return;
+        }
+
+        const data = await res.json();
+        setGoals(data);
+      } catch (err) {
+        console.error("Error loading goals:", err);
+      }
+    };
+
+    if (user?.token) fetchGoals();
+  }, [user]);
+
+  // Add new goal (POST request)
+  const handleAddGoal = async () => {
+    console.log("🔵 Button clicked!");
+    console.log("New goal value:", newGoal);
+    console.log("Trimmed value:", newGoal.trim());
+    console.log("Length:", newGoal.length);
+    
+    alert(`Goal value is: "${newGoal}"`); // ← Temporary alert to see value
+    
+    if (!newGoal.trim()) {
+      console.log("❌ Goal is empty, returning");
+      return;
+    }
+    
+    console.log("🚀 About to send request...");
+    
+    try {
+      const res = await fetch("/api/goals", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ title: newGoal }),
+      });
+
+      console.log("📡 Response status:", res.status);
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Error adding goal:", errorData);
+        return;
+      }
+
+      const createdGoal = await res.json();
+      console.log("✅ Goal created:", createdGoal);
+      setGoals([...goals, createdGoal]);
+      setNewGoal("");
+    } catch (err) {
+      console.error("💥 Error adding goal:", err);
+    }
   };
 
-  const handleIncreaseProgress = (id) => {
-    setGoals((prev) =>
-      prev.map((goal) =>
-        goal.id === id
-          ? { ...goal, progress: Math.min(goal.progress + 10, 100) }
-          : goal
-      )
-    );
-  };
+  // Delete goal (DELETE request)
+  const handleDeleteGoal = async (id) => {
+    try {
+      const res = await fetch(`/api/goals/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
 
-  const handleMarkDone = (id) => {
-    setGoals((prev) =>
-      prev.map((goal) =>
-        goal.id === id ? { ...goal, progress: 100 } : goal
-      )
-    );
+      if (res.ok) {
+        setGoals(goals.filter((goal) => goal._id !== id));
+      } else {
+        console.error("Error deleting goal:", await res.text());
+      }
+    } catch (err) {
+      console.error("Error deleting goal:", err);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Main content */}
+      {/* Main Content */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-6 py-12">
         <h1 className="text-3xl font-semibold mb-6">Goals</h1>
 
@@ -47,7 +102,15 @@ export default function Goals() {
             type="text"
             placeholder="e.g., Read Chapter 5"
             value={newGoal}
-            onChange={(e) => setNewGoal(e.target.value)}
+            onChange={(e) => {
+              console.log("Input changed:", e.target.value);
+              setNewGoal(e.target.value);
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                handleAddGoal();
+              }
+            }}
             className="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
@@ -60,40 +123,36 @@ export default function Goals() {
 
         {/* Goal List */}
         <div className="space-y-5">
-          {goals.map((goal) => (
-            <div
-              key={goal.id}
-              className="bg-white p-5 rounded-xl shadow-sm border border-gray-100"
-            >
-              <div className="flex justify-between items-center mb-3">
-                <p className="font-medium text-lg">{goal.title}</p>
-                <span className="text-gray-600">{goal.progress}%</span>
-              </div>
+          {goals.length === 0 ? (
+            <p className="text-gray-500 text-center">No goals yet. Add one above!</p>
+          ) : (
+            goals.map((goal) => (
+              <div
+                key={goal._id}
+                className="bg-white p-5 rounded-xl shadow-sm border border-gray-100"
+              >
+                <div className="flex justify-between items-center mb-3">
+                  <p className="font-medium text-lg">{goal.title}</p>
+                  <button
+                    onClick={() => handleDeleteGoal(goal._id)}
+                    className="text-red-500 hover:text-red-700 text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
 
-              {/* Progress bar */}
-              <div className="w-full bg-gray-200 h-3 rounded-full overflow-hidden mb-3">
-                <div
-                  className="h-full bg-blue-600 transition-all duration-300"
-                  style={{ width: `${goal.progress}%` }}
-                ></div>
+                {/* Optional extra info */}
+                {goal.description && (
+                  <p className="text-gray-600 text-sm mb-2">{goal.description}</p>
+                )}
+                {goal.targetDate && (
+                  <p className="text-gray-400 text-xs">
+                    Target: {new Date(goal.targetDate).toLocaleDateString()}
+                  </p>
+                )}
               </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={() => handleIncreaseProgress(goal.id)}
-                  className="px-4 py-1 text-sm bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition"
-                >
-                  +10%
-                </button>
-                <button
-                  onClick={() => handleMarkDone(goal.id)}
-                  className="px-4 py-1 text-sm bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-                >
-                  Mark Done
-                </button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </main>
 
