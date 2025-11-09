@@ -30,12 +30,11 @@ function App() {
           <Route path='/contact' element={<Form />} />
 
           {/* Protected Routes */}
-          {/* <Route path='/Reminders' element={<ProtectedRoute><Reminders /></ProtectedRoute>} /> */}
+           <Route path='/Reminders' element={<ProtectedRoute><Reminders /></ProtectedRoute>} /> 
           <Route path='/Timetable' element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
           {/* <Route path='/Goals' element={<ProtectedRoute><Goals /></ProtectedRoute>} /> */}
           {/* Testing without protection */}
           <Route path='/Goals' element={<Goals />} />
-          <Route path='/Reminders' element={<Reminders />} />
 
           <Route path='/Habits' element={<ProtectedRoute><Habits /></ProtectedRoute>} />
         </Routes>
