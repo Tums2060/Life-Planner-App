@@ -15,6 +15,7 @@ import { startReminderJob } from "./services/reminderService.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import timetableRoutes from "./routes/timetableRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
+import habitRoutes from "./routes/habitRoutes.js";
 
 dotenv.config();
 
@@ -38,6 +39,8 @@ app.use("/api/contact", contactRoutes);
 app.use("/api/timetable", timetableRoutes);
 
 app.use("/api/goals", goalRoutes);
+
+app.use("/api/habits", habitRoutes);
 
 
 
