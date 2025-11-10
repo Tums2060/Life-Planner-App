@@ -2,21 +2,29 @@ import cron from "node-cron";
 import Reminder from "../models/Reminder.js";
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.STMP_USER,
-        pass: process.env.STMP_PASS,
-    },
-});
+// Only create transporter if email credentials are provided
+let transporter = null;
+if (process.env.STMP_USER && process.env.STMP_PASS) {
+    transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.STMP_USER,
+            pass: process.env.STMP_PASS,
+        },
+    });
+}
 
 const sendEmail = async (reminder) => {
+    if (!transporter) {
+        console.log("Email not configured. Skipping email for reminder:", reminder.message);
+        return;
+    }
     await transporter.sendMail({
         from: process.env.STMP_USER,
         to: reminder.user.email, //aparently requires populated user
         subject: "Life Planner Reminder",
         text: reminder.message,
-    })
+    });
 }
 
 export const startReminderJob = () => {
