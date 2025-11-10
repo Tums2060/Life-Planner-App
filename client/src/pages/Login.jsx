@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../lib/axios.js";
 import toast from "react-hot-toast";
+import { User } from "lucide-react";
 
 function Login() {
     const [emailOrUsername, setEmailOrUsername] = useState("");
@@ -31,7 +32,7 @@ function Login() {
             toast.success("Login successful!");
             navigate("/Timetable");
         } catch (error) {
-            console.error("❌ Login failed:", error.response?.data || error.message);
+            console.error("Login failed:", error.response?.data || error.message);
             toast.error("Login failed. Please try again later.");
         }
     };
@@ -40,7 +41,9 @@ function Login() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md bg-white shadow-md rounded-xl p-8">
                 <div className="mb-6 text-center">
-                    <div className="mx-auto w-12 h-12 bg-gray-200 rounded-full mb-4"></div>
+                    <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <User className="w-8 h-8 text-blue-600" />
+                    </div>
                     <h1 className="text-2xl font-bold text-gray-800">Welcome Back!</h1>
                     <p className="text-gray-500">Login to you Life Planner Dashboard</p>
                 </div>
