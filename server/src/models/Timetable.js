@@ -11,7 +11,8 @@ const timetableSchema = new mongoose.Schema(
         day: { type: String, required: true},
         time: { type: String, required: true},
         type : { type: String, enum: ["Study", "Personal", "Class"], default: "Personal"}
-    }
+    },
+    { timestamps: true }
 );
 
 export default mongoose.model("Timetable", timetableSchema);

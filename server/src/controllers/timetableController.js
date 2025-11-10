@@ -1,4 +1,4 @@
-import Timetable from "../models/Timetable";
+import Timetable from "../models/Timetable.js";
 
 // @desc Create new timetable entry
 // @route POST /api/timetable
@@ -6,6 +6,10 @@ import Timetable from "../models/Timetable";
 export const createEntry = async (req , res , next) => {
     try {
         const { title, day, time, type} = req.body;
+
+        if (!title || !day || !time) {
+            return res.status(400).json({ message: "Title, day, and time are required" });
+        }
 
         const entry = await Timetable.create({
             user:req.user._id,
@@ -26,8 +30,8 @@ export const createEntry = async (req , res , next) => {
 // @access Private
 export const getEntries = async (req , res, next) => {
     try{
-        const entries = await Timetable.find({ user: req.user._id })
-        res.join(entries);
+        const entries = await Timetable.find({ user: req.user._id }).sort({ day: 1, time: 1 });
+        res.json(entries);
     } catch (err){
         next(err);
     }
@@ -36,7 +40,7 @@ export const getEntries = async (req , res, next) => {
 // @desc GET single entry
 // @route GET /api/timetable/:id
 // @access Private
-export default getEntryById = async (req , res, next) => {
+export const getEntryById = async (req , res, next) => {
     try{
         const entry = await Timetable.findById(req.params.id);
         if (!entry || entry.user.toString() !== req.user._id.toString()){
@@ -49,7 +53,7 @@ export default getEntryById = async (req , res, next) => {
 };
 
 // @desc Update entry
-// @route PUT /api/timetable:id
+// @route PUT /api/timetable/:id
 // @access Private
 export const updateEntry = async (req , res, next) => {
     try{
