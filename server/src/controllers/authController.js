@@ -33,14 +33,24 @@ try {
 
 export const loginUser = async (req , res , next) => {
     try{
-        const {email, password} = req.body;
-        const user = await User.findOne({email});
+        const {emailOrUsername, email, password} = req.body;
+        
+        // Support both email and emailOrUsername fields
+        const loginField = emailOrUsername || email;
+        
+        if (!loginField || !password) {
+            return res.status(400).json({message: "Email and password are required"});
+        }
+
+        const user = await User.findOne({email: loginField});
 
         if (user && (await user.matchPassword(password))) {
             res.json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
+                user: {
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                },
                 token: generateToken(user._id),
             });
         } else {
