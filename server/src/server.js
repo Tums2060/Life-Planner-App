@@ -20,7 +20,6 @@ import habitRoutes from "./routes/habitRoutes.js";
 dotenv.config();
 
 const app = express();
-connectDB();
 
 // Middleware
 app.use(cors({
@@ -51,6 +50,8 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5001;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}/`);
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
 });

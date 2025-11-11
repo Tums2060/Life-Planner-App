@@ -1,5 +1,24 @@
 {
-  "dependencies": {
-    "react-hot-toast": "^2.6.0"
-  }
+  "name": "life-planner-app",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "npm  install --prefix server && npm run dev --prefix server",
+    "client": "npm  install --prefix client && npm run start --prefix client",
+    "dev": "npm install && concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tums2060/Life-Planner-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tums2060/Life-Planner-App/issues"
+  },
+  "homepage": "https://github.com/Tums2060/Life-Planner-App#readme"
 }
