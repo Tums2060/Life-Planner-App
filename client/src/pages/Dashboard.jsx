@@ -14,6 +14,9 @@ import {
   Zap,
   Bell,
   ChevronRight,
+  Lightbulb,
+  Smile,
+  Award,
 } from "lucide-react";
 
 function Dashboard() {
@@ -155,12 +158,15 @@ function Dashboard() {
         {/* Welcome Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-4xl font-bold text-gray-900">
-              Welcome back, <span className="text-blue-600">{user?.name}!</span> 👋
-            </h1>
+            <div className="flex items-center gap-3">
+              <Smile className="w-10 h-10 text-blue-600 flex-shrink-0" />
+              <h1 className="text-4xl font-bold text-gray-900">
+                Welcome back, <span className="text-blue-600">{user?.name}!</span>
+              </h1>
+            </div>
           </div>
           <p className="text-lg text-gray-600">
-            You're doing great — stay consistent today! 💪
+            You're doing great — stay consistent today
           </p>
         </div>
 
@@ -205,7 +211,7 @@ function Dashboard() {
                   <Calendar className="w-12 h-12 text-gray-300 flex-shrink-0" />
                   <div className="text-left flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">No tasks today</h3>
-                    <p className="text-gray-600">Great job! You're all caught up. 🎉</p>
+                    <p className="text-gray-600">Great job! You're all caught up.</p>
                   </div>
                 </div>
               </div>
@@ -280,7 +286,9 @@ function Dashboard() {
                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                     >
                       <div className="flex items-center gap-3 flex-1">
-                        <span className="text-xl">🔥</span>
+                        <div className="p-2 bg-orange-100 rounded-lg">
+                          <Flame className="w-5 h-5 text-orange-600" />
+                        </div>
                         <div className="flex-1">
                           <p className="font-semibold text-gray-900">{habit.title}</p>
                           <p className="text-sm text-gray-600">
@@ -383,10 +391,10 @@ function Dashboard() {
             {/* Motivation Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-start gap-3">
-                <Zap className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-1" />
+                <Lightbulb className="w-6 h-6 text-yellow-500 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-sm">
-                    💡 Motivation of the Day
+                    Motivation of the Day
                   </h3>
                   <p className="text-sm text-gray-700 leading-relaxed">{randomQuote}</p>
                 </div>
