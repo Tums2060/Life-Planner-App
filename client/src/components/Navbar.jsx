@@ -1,29 +1,37 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen } from "lucide-react";
 import { useAuth } from '../context/AuthContext';
 
 
 function Navbar(){
     const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
         window.location.href = '/';
     };
 
+    // Handle logo click - navigate to dashboard if logged in, landing page if not
+    const handleLogoClick = (e) => {
+        e.preventDefault();
+        if (user) {
+            navigate('/dashboard');
+        } else {
+            navigate('/');
+        }
+    };
+
     return(
 
         <nav className='flex items-center justify-between px-8 py-4 bg-white border-b border-gray-300 shadow-sm sticky top-0 z-50'>
 
-            <div className='flex-items-center space-x-2'>
-                <BookOpen className='w-8 h-8 text-blue-600' />
-                <Link
-                    to='/'
-                    className='text-xl font-semibold text-gray-800 tracking-tight hover:text-blue-600 transition-colors'
-                    >
-                        Life Planner
-                </Link>
+            <div className='flex items-center space-x-2 cursor-pointer' onClick={handleLogoClick}>
+                <BookOpen className='w-8 h-8 text-blue-600 hover:text-blue-700 transition-colors' />
+                <span className='text-xl font-semibold text-gray-800 tracking-tight hover:text-blue-600 transition-colors'>
+                    Life Planner
+                </span>
             </div>
 
             <ul className="hidden md:flex space-x-8 text-gray-700 font-medium">

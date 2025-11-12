@@ -3,6 +3,7 @@ import './App.css';
 import Landingpage from './pages/LandingPage.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/SignUp.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Form from './components/ContactForm.jsx';
@@ -30,6 +31,7 @@ function App() {
           <Route path='/contact' element={<Form />} />
 
           {/* Protected Routes */}
+          <Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path='/Reminders' element={<ProtectedRoute><Reminders /></ProtectedRoute>} />
           <Route path='/Timetable' element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
           <Route path='/Goals' element={<ProtectedRoute><Goals /></ProtectedRoute>} />
