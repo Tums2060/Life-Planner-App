@@ -21,7 +21,7 @@ function Login() {
                 password,
             });
 
-            console.log("✅ Login response:", res.data);
+            console.log("Login response:", res.data);
 
             // Save user + token to context/localStorage
             const userData = {
@@ -29,12 +29,12 @@ function Login() {
                 token: res.data.token
             };
 
-            console.log("📦 Saving user data:", userData);
+            console.log("Saving user data:", userData);
             login(userData);
             toast.success("Login successful!");
             navigate("/Timetable");
         } catch (error) {
-            console.error("❌ Login failed:", error.response?.data || error.message);
+            console.error("Login failed:", error.response?.data || error.message);
             toast.error(error.response?.data?.message || "Login failed. Please try again later.");
         }
     };
