@@ -10,10 +10,15 @@ const goalSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
-    description: String,
-    targetDate: Date,
-    completed: {
+    progress: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
+    isCompleted: {
       type: Boolean,
       default: false,
     },
@@ -21,5 +26,4 @@ const goalSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Goal = mongoose.model("Goal", goalSchema);
-export default Goal;
+export default mongoose.model("Goal", goalSchema);
