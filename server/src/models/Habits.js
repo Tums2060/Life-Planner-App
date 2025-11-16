@@ -7,32 +7,35 @@ const habitSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    title: { 
-      type: String, 
-      required: true 
+    title: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    description: { 
-      type: String 
+    description: {
+      type: String,
+      default: "",
     },
     frequency: {
       type: String,
       enum: ["daily", "weekly"],
       default: "daily",
     },
-    currentStreak: { 
-      type: Number, 
-      default: 0 
+    currentStreak: {
+      type: Number,
+      default: 0,
     },
-    longestStreak: { 
-      type: Number, 
-      default: 0 
+    longestStreak: {
+      type: Number,
+      default: 0,
     },
-    lastCompleted: { 
-      type: Date 
+    lastCompleted: {
+      type: Date,
+      default: null,
     },
-    isArchived: { 
-      type: Boolean, 
-      default: false 
+    isArchived: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
