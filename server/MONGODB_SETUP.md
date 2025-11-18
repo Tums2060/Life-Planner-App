@@ -2,7 +2,7 @@
 
 This guide provides step-by-step instructions for setting up MongoDB Atlas and connecting it to your Express.js application.
 
-## 📋 Table of Contents
+## 📋 Table of Contents Guide
 - [Create MongoDB Atlas Account](#create-mongodb-atlas-account)
 - [Create a New Cluster](#create-a-new-cluster)
 - [Configure Database Access](#configure-database-access)
