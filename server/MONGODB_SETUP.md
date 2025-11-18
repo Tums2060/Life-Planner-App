@@ -207,4 +207,4 @@ This guide provides:
 You can:
 1. Add more details to any section
 2. Include more specific examples
-3. Add other sections you think might helpful
+3. Add other sections you think might by helpful
