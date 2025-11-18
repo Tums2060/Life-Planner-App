@@ -5,8 +5,8 @@ import { protect } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.route("/")
-  .post(protect, createReminder)
-  .get(protect, getReminders);
+    .post(protect, createReminder)
+    .get(protect, getReminders);
 
 router.delete("/:id", protect, deleteReminder);
 
