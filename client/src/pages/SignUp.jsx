@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function SignUp(){
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ function SignUp(){
         e.preventDefault();
         
         if (form.password !== form.confirmPassword){
-            alert("Passwords do not match");
+            toast.error("Passwords do not match!");
             return;
         }
 
@@ -44,14 +45,14 @@ function SignUp(){
             console.log(data);
 
             if (response.ok){
-                alert("Registration successfull");
+                toast.success("Registration successful!");
                 navigate("/login");
             } else {
-                alert(data.message || "Registration failed!");
+                toast.error(data.message || "Something went wrong. Please try again later.");
             } 
         }catch (error) {
                 console.error("Error during registration:", error);
-                alert("Something went wrong. Please try again later.");
+                toast.error("Registration failed. Please try again later.");
             }
     };
 
