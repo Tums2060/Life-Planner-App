@@ -1,8 +1,5 @@
 import Reminder from "../models/Reminder.js";
 
-// @desc    Create custom reminder
-// @route   POST /api/reminders
-// @access  Private
 export const createReminder = async (req, res, next) => {
   try {
     const reminder = await Reminder.create({
@@ -15,9 +12,6 @@ export const createReminder = async (req, res, next) => {
   }
 };
 
-// @desc    Get reminders
-// @route   GET /api/reminders
-// @access  Private
 export const getReminders = async (req, res, next) => {
   try {
     const reminders = await Reminder.find({ user: req.user._id }).sort({ remindAt: 1 });
@@ -27,10 +21,6 @@ export const getReminders = async (req, res, next) => {
   }
 };
 
-
-// @desc    Delete reminder
-// @route   DELETE /api/reminders/:id
-// @access  Private
 export const deleteReminder = async (req, res, next) => {
   try {
     const reminder = await Reminder.findById(req.params.id);
