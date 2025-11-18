@@ -42,7 +42,7 @@ export default function ReminderSettings() {
             <button
               onClick={() => handleToggle(key)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${
-                settings[key] ? "bg-purple-600" : "bg-gray-300"
+                settings[key] ? "bg-blue-600" : "bg-gray-300"
               }`}
             >
               <span
