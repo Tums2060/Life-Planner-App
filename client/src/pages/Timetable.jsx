@@ -85,9 +85,19 @@ function Timetable() {
 
   // Get events for a specific date
   const getEventsForDate = (date) => {
-    const dayString = dateToDayString(date);
+    const dateString = dateToString(date);
     return events
-      .filter((e) => e.day === dayString)
+      .filter((e) => {
+        // Handle both new format (with date field) and old format (with day field)
+        if (e.date) {
+          const eventDateString = dateToString(new Date(e.date));
+          return eventDateString === dateString;
+        } else if (e.day) {
+          // Fallback for old format - match by day name
+          return e.day === dateToDayString(date);
+        }
+        return false;
+      })
       .sort((a, b) => a.time.localeCompare(b.time));
   };
 
@@ -108,10 +118,9 @@ function Timetable() {
     }
 
     try {
-      const dayString = dateToDayString(selectedDay);
       const res = await api.post("/timetable", {
         title: form.title,
-        day: dayString,
+        date: dateToString(selectedDay),
         time: form.time,
         type: form.type,
       });

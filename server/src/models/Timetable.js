@@ -8,7 +8,7 @@ const timetableSchema = new mongoose.Schema(
             required: true,
         },
         title: { type: String, required: true},
-        day: { type: String, required: true},
+        date: { type: Date, required: true},
         time: { type: String, required: true},
         type : { type: String, enum: ["Study", "Personal", "Class"], default: "Personal"}
     },

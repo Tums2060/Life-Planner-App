@@ -76,10 +76,20 @@ function Dashboard() {
   // Get next task for today
   const getNextTask = () => {
     const today = new Date();
+    const todayDateString = today.toISOString().split("T")[0];
     const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const todayName = dayNames[today.getDay()];
 
-    const todayTasks = data.timetable.filter((t) => t.day === todayName);
+    const todayTasks = data.timetable.filter((t) => {
+      // Handle both new format (with date field) and old format (with day field)
+      if (t.date) {
+        const taskDateString = new Date(t.date).toISOString().split("T")[0];
+        return taskDateString === todayDateString;
+      } else if (t.day) {
+        return t.day === todayName;
+      }
+      return false;
+    });
     if (todayTasks.length === 0) return null;
 
     // Find the next upcoming task
@@ -366,8 +376,19 @@ function Dashboard() {
                   <span className="text-blue-100">Tasks Today</span>
                   <span className="text-2xl font-bold">
                     {data.timetable.filter((t) => {
+                      const today = new Date();
+                      const todayDateString = today.toISOString().split("T")[0];
                       const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                      return t.day === dayNames[new Date().getDay()];
+                      const todayName = dayNames[today.getDay()];
+                      
+                      // Handle both new format (with date field) and old format (with day field)
+                      if (t.date) {
+                        const taskDateString = new Date(t.date).toISOString().split("T")[0];
+                        return taskDateString === todayDateString;
+                      } else if (t.day) {
+                        return t.day === todayName;
+                      }
+                      return false;
                     }).length}
                   </span>
                 </div>

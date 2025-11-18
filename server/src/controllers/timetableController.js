@@ -5,16 +5,16 @@ import Timetable from "../models/Timetable.js";
 // @access Private
 export const createEntry = async (req , res , next) => {
     try {
-        const { title, day, time, type} = req.body;
+        const { title, date, time, type} = req.body;
 
-        if (!title || !day || !time) {
-            return res.status(400).json({ message: "Title, day, and time are required" });
+        if (!title || !date || !time) {
+            return res.status(400).json({ message: "Title, date, and time are required" });
         }
 
         const entry = await Timetable.create({
             user:req.user._id,
             title,
-            day,
+            date: new Date(date),
             time,
             type,
         });
@@ -30,7 +30,7 @@ export const createEntry = async (req , res , next) => {
 // @access Private
 export const getEntries = async (req , res, next) => {
     try{
-        const entries = await Timetable.find({ user: req.user._id }).sort({ day: 1, time: 1 });
+        const entries = await Timetable.find({ user: req.user._id }).sort({ date: 1, time: 1 });
         res.json(entries);
     } catch (err){
         next(err);
