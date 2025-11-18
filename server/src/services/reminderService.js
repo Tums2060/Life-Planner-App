@@ -5,27 +5,28 @@ import nodemailer from "nodemailer";
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-        user: process.env.STMP_USER,
-        pass: process.env.STMP_PASS,
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
     },
 });
 
+// Send a reminder email
 const sendEmail = async (reminder) => {
     await transporter.sendMail({
-        from: process.env.STMP_USER,
-        to: reminder.user.email, //aparently requires populated user
+        from: process.env.SMTP_USER,
+        to: reminder.user.email,
         subject: "Life Planner Reminder",
         text: reminder.message,
-    })
-}
+    });
+};
 
+// Process reminders periodically
 export const startReminderJob = () => {
     cron.schedule("*/1 * * * *", async () => {
         const now = new Date();
         const dueReminders = await Reminder.find({
-            remindAt: {$lte: now},
+            remindAt: { $lte: now },
             isSent: false,
-
         }).populate("user");
 
         for (const reminder of dueReminders) {
