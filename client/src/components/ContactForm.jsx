@@ -1,5 +1,4 @@
 import React from 'react';
-import { BookOpen } from "lucide-react";  
 import { Mail, Phone, MapPin, Send, Clock } from "lucide-react";
 import { useState } from 'react';
 import axios from 'axios';
@@ -30,7 +29,7 @@ function Form(){
     setSuccess(false);
 
     try {
-      const response = await axios.post("http://localhost:5001/api/contact", formData);
+      await axios.post("http://localhost:5001/api/contact", formData);
       setSuccess(true);
       setFormData({
         firstName: "",

@@ -5,18 +5,14 @@ import api from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {
   Clock,
-  CheckCircle2,
   Flame,
   AlertCircle,
-  TrendingUp,
   Calendar,
   Target,
-  Zap,
   Bell,
   ChevronRight,
   Lightbulb,
   Smile,
-  Award,
 } from "lucide-react";
 
 function Dashboard() {

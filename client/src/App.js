@@ -12,13 +12,10 @@ import Timetable from './pages/Timetable.jsx';
 import Goals from './pages/Goals.jsx';
 import Habits from './pages/Habits.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
-import { useAuth } from './context/AuthContext.jsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const { user } = useAuth();
-  
   return (
     <Router>
       <div className="App">

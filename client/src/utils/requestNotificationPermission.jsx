@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 export const requestNotificationPermission = async () => {
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notification");
