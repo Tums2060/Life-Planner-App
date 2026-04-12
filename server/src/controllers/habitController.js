@@ -1,4 +1,4 @@
-import Habit from "../models/Habit.js";
+import Habit from "../models/Habits.js";
 
 // @desc    Create a new habit
 // @route   POST /api/habits

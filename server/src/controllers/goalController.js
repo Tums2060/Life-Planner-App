@@ -1,4 +1,4 @@
-import Goal from "../models/Goal.js";
+import Goal from "../models/goal.js";
 
 // @desc    Create a new goal
 // @route   POST /api/goals

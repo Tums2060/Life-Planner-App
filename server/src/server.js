@@ -11,6 +11,9 @@ import dotenv from 'dotenv';
 
 import { connectDB } from './config/db.js';
 import authRoutes from "./routes/authRoutes.js";
+import goalRoutes from "./routes/goalRoute.js";
+import timetableRoutes from "./routes/timetableRoutes.js";
+import habitRoutes from "./routes/habitRoutes.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
 import { startReminderJob } from "./services/reminderService.js";
 import contactRoutes from "./routes/contactRoutes.js";
@@ -35,8 +38,9 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRoutes);
-app.use("/api/auth", authRoutes);
-
+app.use("/api/goals", goalRoutes);
+app.use("/api/timetable", timetableRoutes);
+app.use("/api/habits", habitRoutes);
 app.use("/api/reminders", reminderRoutes);
 startReminderJob();
 
